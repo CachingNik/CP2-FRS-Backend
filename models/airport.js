@@ -1,13 +1,12 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 
-const Airport = mongoose.model(
-  "Airport",
-  new mongoose.Schema({
-    name: { type: String, required: true },
-    abbrevation: { type: String, required: true, uppercase: true },
-  })
-);
+const airportSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  abbrevation: { type: String, required: true, uppercase: true },
+});
+
+const Airport = mongoose.model("Airport", airportSchema);
 
 function validateAirport(airport) {
   const schema = Joi.object({
@@ -18,5 +17,6 @@ function validateAirport(airport) {
   return schema.validate(airport);
 }
 
+exports.airportSchema = airportSchema;
 exports.Airport = Airport;
 exports.validate = validateAirport;

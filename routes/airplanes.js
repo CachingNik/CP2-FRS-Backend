@@ -4,9 +4,9 @@ const { Airplane, validate } = require("../models/airplane");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const airplane = await Airplane.find().sort("name");
+  const airplanes = await Airplane.find().sort("name");
 
-  res.send(airplane);
+  res.send(airplanes);
 });
 
 router.get("/:id", async (req, res) => {
