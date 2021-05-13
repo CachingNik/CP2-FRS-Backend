@@ -21,6 +21,16 @@ router.get("/:fromId/:toId/:departure", async (req, res) => {
   res.send(packages);
 });
 
+router.get("/airplanes-name/:fromId/:toId/:departure", async (req, res) => {
+  const packages = await Package.find({
+    "from._id": req.params.fromId,
+    "to._id": req.params.toId,
+    departure: { $gt: new Date(req.params.departure) },
+  }).distinct("airplane.name");
+
+  res.send(packages);
+});
+
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) {
