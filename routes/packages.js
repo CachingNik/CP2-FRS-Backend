@@ -2,6 +2,7 @@ const express = require("express");
 const { Package, validate } = require("../models/package");
 const { Airplane } = require("../models/airplane");
 const { Airport } = require("../models/airport");
+const { ServiceClass } = require("../models/serviceClass");
 
 const router = express.Router();
 
@@ -11,25 +12,34 @@ router.get("/", async (req, res) => {
   res.send(packages);
 });
 
-router.get("/:fromId/:toId/:departure", async (req, res) => {
+router.get("/:fromId/:toId/:serviceClassId/:departure", async (req, res) => {
   const packages = await Package.find({
     "from._id": req.params.fromId,
     "to._id": req.params.toId,
+    "serviceClass._id": req.params.serviceClassId,
     departure: { $gt: new Date(req.params.departure) },
   });
 
-  res.send(packages);
-});
-
-router.get("/airplanes-name/:fromId/:toId/:departure", async (req, res) => {
-  const packages = await Package.find({
-    "from._id": req.params.fromId,
-    "to._id": req.params.toId,
-    departure: { $gt: new Date(req.params.departure) },
-  }).distinct("airplane.name");
+  if (!packages) return res.status(404).send("No Flights found.");
 
   res.send(packages);
 });
+
+router.get(
+  "/airplanes-name/:fromId/:toId/:serviceClassId/:departure",
+  async (req, res) => {
+    const airplanes = await Package.find({
+      "from._id": req.params.fromId,
+      "to._id": req.params.toId,
+      "serviceClass._id": req.params.serviceClassId,
+      departure: { $gt: new Date(req.params.departure) },
+    }).distinct("airplane.name");
+
+    if (!airplanes) return res.status(404).send("No Airlines assigned here.");
+
+    res.send(airplanes);
+  }
+);
 
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
@@ -47,14 +57,18 @@ router.post("/", async (req, res) => {
   const to = await Airport.findById(req.body.toId);
   if (!to) return res.status(400).send("Invalid Airport.");
 
+  const serviceClass = await ServiceClass.findById(req.body.serviceClassId);
+  if (!to) return res.status(400).send("Invalid Class.");
+
   let package = new Package({
     airplane: airplane,
     from: from,
     to: to,
+    serviceClass: serviceClass,
     departure: req.body.departure,
     arrival: req.body.arrival,
     price: req.body.price,
-    capacity: req.body.capacity,
+    seatsLeft: req.body.seatsLeft,
   });
   package = await package.save();
 

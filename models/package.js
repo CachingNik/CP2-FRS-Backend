@@ -1,13 +1,9 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 const { airplaneSchema } = require("./airplane");
 const { airportSchema } = require("./airport");
-
-const priceSchema = new mongoose.Schema({
-  economy: { type: Number, default: 0 },
-  business: { type: Number, default: 0 },
-  first: { type: Number, default: 0 },
-});
+const { serviceClassSchema } = require("./serviceClass");
 
 const Package = mongoose.model(
   "Package",
@@ -24,6 +20,10 @@ const Package = mongoose.model(
       type: airportSchema,
       required: true,
     },
+    serviceClass: {
+      type: serviceClassSchema,
+      required: true,
+    },
     departure: {
       type: Date,
       required: true,
@@ -34,26 +34,26 @@ const Package = mongoose.model(
     },
     price: {
       type: new mongoose.Schema({
-        adult: { type: priceSchema, required: true },
-        child: { type: priceSchema, required: true },
-        infant: { type: priceSchema, required: true },
+        adult: { type: Number, required: true },
+        child: { type: Number, required: true },
+        infant: { type: Number, required: true },
       }),
       required: true,
     },
-    capacity: {
+    seatsLeft: {
       type: Number,
       required: true,
-      min: 100,
-      max: 1000,
+      min: 0,
     },
   })
 );
 
 function validatePackage(package) {
   const schema = Joi.object({
-    airplaneId: Joi.string().required(),
-    fromId: Joi.string().required(),
-    toId: Joi.string().required(),
+    airplaneId: Joi.objectId().required(),
+    fromId: Joi.objectId().required(),
+    toId: Joi.objectId().required(),
+    serviceClassId: Joi.objectId().required(),
     departure: Joi.date().required(),
     arrival: Joi.date().greater(Joi.ref("departure")).required(),
     price: Joi.object().required().keys({
@@ -61,7 +61,7 @@ function validatePackage(package) {
       child: Joi.required(),
       infant: Joi.required(),
     }),
-    capacity: Joi.number().min(100).max(1000).required(),
+    seatsLeft: Joi.number().min(0).required(),
   });
 
   return schema.validate(package);

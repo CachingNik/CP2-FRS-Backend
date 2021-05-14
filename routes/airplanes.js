@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const airplane = await Airplane.findById(req.params.id);
 
-  if (!airplane) return res.status(404).send("No such Airplane exists!");
+  if (!airplane) return res.status(404).send("No such Airline exists.");
 
   res.send(airplane);
 });
@@ -46,7 +46,7 @@ router.put("/:id", async (req, res) => {
     { new: true }
   );
 
-  if (!airplane) return res.status(404).send("No such Airplane exists!");
+  if (!airplane) return res.status(404).send("No such Airline exists.");
 
   res.send(airplane);
 });
@@ -54,7 +54,7 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   const airplane = await Airplane.findByIdAndRemove(req.params.id);
 
-  if (!airplane) return res.status(404).send("No such Airplane exists!");
+  if (!airplane) return res.status(404).send("No such Airline exists.");
 
   res.send(airplane);
 });
