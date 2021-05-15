@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
-Joi.objectId = require("joi-objectid")(Joi);
 const { airplaneSchema } = require("./airplane");
 const { airportSchema } = require("./airport");
 const { serviceClassSchema } = require("./serviceClass");
