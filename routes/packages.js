@@ -60,7 +60,7 @@ router.post("/", async (req, res) => {
   const serviceClass = await ServiceClass.findById(req.body.serviceClassId);
   if (!to) return res.status(400).send("Invalid Class.");
 
-  let package = new Package({
+  const package = new Package({
     airplane: airplane,
     from: from,
     to: to,
@@ -70,7 +70,8 @@ router.post("/", async (req, res) => {
     price: req.body.price,
     seatsLeft: req.body.seatsLeft,
   });
-  package = await package.save();
+
+  await package.save();
 
   res.send(package);
 });

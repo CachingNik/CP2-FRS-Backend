@@ -24,10 +24,11 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  let serviceClass = new ServiceClass({
+  const serviceClass = new ServiceClass({
     name: req.body.name,
   });
-  serviceClass = await serviceClass.save();
+
+  await serviceClass.save();
 
   res.send(serviceClass);
 });
