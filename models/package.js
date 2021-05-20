@@ -32,12 +32,9 @@ const Package = mongoose.model(
       required: true,
     },
     price: {
-      type: new mongoose.Schema({
-        adult: { type: Number, required: true },
-        child: { type: Number, required: true },
-        infant: { type: Number, required: true },
-      }),
-      required: true,
+      adult: { type: Number, required: true },
+      child: { type: Number, required: true },
+      infant: { type: Number, required: true },
     },
     seatsLeft: {
       type: Number,
@@ -55,11 +52,11 @@ function validatePackage(package) {
     serviceClassId: Joi.objectId().required(),
     departure: Joi.date().required(),
     arrival: Joi.date().greater(Joi.ref("departure")).required(),
-    price: Joi.object().required().keys({
-      adult: Joi.required(),
-      child: Joi.required(),
-      infant: Joi.required(),
-    }),
+    price: {
+      adult: Joi.number().min(0).required(),
+      child: Joi.number().min(0).required(),
+      infant: Joi.number().min(0).required(),
+    },
     seatsLeft: Joi.number().min(0).required(),
   });
 
