@@ -34,7 +34,6 @@ const Package = mongoose.model(
     price: {
       adult: { type: Number, required: true },
       child: { type: Number, required: true },
-      infant: { type: Number, required: true },
     },
     seatsLeft: {
       type: Number,
@@ -55,7 +54,6 @@ function validatePackage(package) {
     price: {
       adult: Joi.number().min(0).required(),
       child: Joi.number().min(0).required(),
-      infant: Joi.number().min(0).required(),
     },
     seatsLeft: Joi.number().min(0).required(),
   });
