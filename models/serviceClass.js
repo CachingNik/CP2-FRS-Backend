@@ -7,7 +7,7 @@ const serviceClassSchema = new mongoose.Schema({
   name: { type: String, enum: ListofServiceClasses, required: true },
 });
 
-const ServiceClass = mongoose.model("SericeClass", serviceClassSchema);
+const ServiceClass = mongoose.model("ServiceClass", serviceClassSchema);
 
 function validateServiceClass(serviceClass) {
   const schema = Joi.object({
