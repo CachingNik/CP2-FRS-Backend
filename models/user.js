@@ -21,12 +21,22 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 1024,
   },
+  mobileNumber: {
+    type: Number,
+    length: 10,
+  },
   isAdmin: Boolean,
 });
 
 userSchema.methods.generateAuthToken = function () {
   return jwt.sign(
-    { _id: this._id, name: this.name, isAdmin: this.isAdmin },
+    {
+      _id: this._id,
+      name: this.name,
+      email: this.email,
+      mobileNumber: this.mobileNumber,
+      isAdmin: this.isAdmin,
+    },
     config.get("jwtPrivateKey")
   );
 };
@@ -38,6 +48,7 @@ function validateUser(user) {
     name: Joi.string().min(5).max(50).required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(5).max(255).required(),
+    mobileNumber: Joi.number().integer().min(1000000000).max(9999999999),
     isAdmin: Joi.boolean(),
   });
 
