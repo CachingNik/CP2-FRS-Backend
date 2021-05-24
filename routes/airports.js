@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
 
   const airport = new Airport({
     name: req.body.name,
-    abbrevation: req.body.abbrevation,
+    abbreviation: req.body.abbreviation,
   });
 
   await airport.save();
