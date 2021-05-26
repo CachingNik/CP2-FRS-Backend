@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const winston = require("winston");
+const config = require("config");
 
 module.exports = function () {
   const mongodbOptions = {
@@ -9,7 +10,9 @@ module.exports = function () {
     useFindAndModify: false,
   };
 
+  const db = config.get("db");
+
   mongoose
-    .connect("mongodb://localhost/frs", mongodbOptions)
-    .then(() => winston.info("Connected to MongoDB..."));
+    .connect(db, mongodbOptions)
+    .then(() => winston.info(`Connected to ${db}...`));
 };
