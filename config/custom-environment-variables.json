@@ -1,3 +1,5 @@
 {
-  "jwtPrivateKey": "frs_jwtPrivateKey"
+  "jwtPrivateKey": "frs_jwtPrivateKey",
+  "razorpayId": "frs_razorpayId",
+  "razorpaySecret": "frs_razorpaySecret"
 }
