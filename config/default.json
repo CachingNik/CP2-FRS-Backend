@@ -1,4 +1,6 @@
 {
   "jwtPrivateKey": "",
-  "db": "mongodb://localhost/frs"
+  "db": "mongodb://localhost/frs",
+  "razorpayId": "",
+  "razorpaySecret": ""
 }

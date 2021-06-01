@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 
-const ListofServiceClasses = ["Economy", "Business", "First"];
+const listofServiceClasses = ["Economy", "Business", "First"];
 
 const serviceClassSchema = new mongoose.Schema({
-  name: { type: String, enum: ListofServiceClasses, required: true },
+  name: { type: String, enum: listofServiceClasses, required: true },
 });
 
 const ServiceClass = mongoose.model("ServiceClass", serviceClassSchema);
@@ -12,7 +12,7 @@ const ServiceClass = mongoose.model("ServiceClass", serviceClassSchema);
 function validateServiceClass(serviceClass) {
   const schema = Joi.object({
     name: Joi.string()
-      .valid(...ListofServiceClasses)
+      .valid(...listofServiceClasses)
       .required(),
   });
 
