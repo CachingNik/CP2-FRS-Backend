@@ -1,5 +1,7 @@
 {
   "jwtPrivateKey": "",
   "razorpayId": "",
-  "razorpaySecret": ""
+  "razorpaySecret": "",
+  "email": "",
+  "password": ""
 }
