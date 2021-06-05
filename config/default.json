@@ -2,5 +2,7 @@
   "jwtPrivateKey": "",
   "db": "mongodb://localhost/frs",
   "razorpayId": "",
-  "razorpaySecret": ""
+  "razorpaySecret": "",
+  "email": "",
+  "password": ""
 }

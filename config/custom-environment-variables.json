@@ -2,5 +2,7 @@
   "jwtPrivateKey": "frs_jwtPrivateKey",
   "db": "frs_db",
   "razorpayId": "frs_razorpayId",
-  "razorpaySecret": "frs_razorpaySecret"
+  "razorpaySecret": "frs_razorpaySecret",
+  "email": "frs_email",
+  "password": "frs_password"
 }

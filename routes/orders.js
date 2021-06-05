@@ -6,13 +6,20 @@ const shortId = require("shortid");
 const crypto = require("crypto");
 const config = require("config");
 const auth = require("../middleware/auth");
-const { Order } = require("../models/order");
+const { Order, validate } = require("../models/order");
+const emailService = require("../services/emailService");
 
 const router = express.Router();
 
 Fawn.init(mongoose);
 
 router.post("/new", [auth], async (req, res) => {
+  const { error } = validate(req.body);
+  if (error) {
+    res.status(400).send(error.details[0].message);
+    return;
+  }
+
   const razorpay = new Razorpay({
     key_id: config.get("razorpayId"),
     key_secret: config.get("razorpaySecret"),
@@ -40,6 +47,7 @@ router.post("/verification", [auth], async (req, res) => {
     mobileNumber,
     adultList,
     childList,
+    amount,
   } = req.body;
 
   const shasum = crypto.createHmac("sha256", config.get("razorpaySecret"));
@@ -57,6 +65,7 @@ router.post("/verification", [auth], async (req, res) => {
     mobileNumber: mobileNumber,
     adultList: adultList,
     childList: childList,
+    amount: amount,
   });
 
   const passengerCount = adultList.length + childList.length;
@@ -69,6 +78,19 @@ router.post("/verification", [auth], async (req, res) => {
       { $inc: { seatsLeft: -passengerCount } }
     )
     .run();
+
+  emailService.sendEmail({
+    from: config.get("email"),
+    to: email,
+    subject: "Capstone 2 (FRS) - Ticket",
+    text: `Dear ${name},
+We have attached your ticket(s) below.
+Have a safe and happy journey.
+                
+Thank you
+Team FRS`,
+    attachments: [{ filename: "ticket.pdf", path: "./public/ticket.pdf" }],
+  });
 
   res.send(order);
 });
